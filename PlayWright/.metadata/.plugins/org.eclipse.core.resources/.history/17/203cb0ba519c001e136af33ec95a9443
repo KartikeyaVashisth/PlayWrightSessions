@@ -1,0 +1,50 @@
+package playwrightsessions;
+
+import java.util.List;
+
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.options.AriaRole;
+
+public class LocatorConcept {
+
+	public static void main(String[] args) {
+		
+		Playwright playwright = Playwright.create();
+		Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+		
+		BrowserContext browserContext = browser.newContext();
+		Page page = browserContext.newPage();
+		
+		page.navigate("https://www.orangehrm.com/orangehrm-30-day-trial/");
+		
+		Locator contactSales = page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Contact Sales"));
+		contactSales.hover();
+		contactSales.click();
+		
+		//To get the count of number of elements
+		
+		Locator loginBtn = page.locator("text=login");
+		int totalLogins = loginBtn.count();
+		System.out.println(totalLogins);
+		loginBtn.first().click();
+		
+		//Multiple Elements
+		
+		Locator countryOptions = page.locator("select#Form_submitForm_Country_option");
+		System.out.println(countryOptions.count());
+		
+		List<String> optionsTextList = countryOptions.allTextContents(); //To get the content of all the items and storing in the list
+		
+		for(String e : optionsTextList) {
+			System.out.println(e);
+		}
+		 //OR
+		
+		optionsTextList.forEach(ele -> System.out.println(ele));
+	}
+}

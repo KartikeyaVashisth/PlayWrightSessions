@@ -1,0 +1,27 @@
+package playwrightsessions;
+
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
+
+public class TextSelector {
+
+	public static void main(String[] args) {
+		
+		Playwright playwright = Playwright.create();
+		Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+		
+		Page page = browser.newPage();
+		page.navigate("https://demo.opencart.com/index.php?route=account/login");
+		
+		String header = page.locator("div.well h2:has-text('New Customer')").textContent();
+		System.out.println(header);
+		
+		String pageHeader = page.locator("text=Your Store").first().textContent();
+		System.out.println(pageHeader);
+		
+		//button
+		page.locator("form input:has-text('Login')").click(); //To get to the specific login button. 'form' and 'input' are the html tags. Whenever we use "has-text", use ('')
+	}
+}
